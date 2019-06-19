@@ -545,6 +545,7 @@ message LayerParameter {
 
   optional ShuffleChannelParameter shuffle_channel_param = 164;
   optional UpsampleParameter upsample_param = 165;
+  optional FocalLossParameter focal_loss_param = 147;
 }
 
 // Message that stores parameters used to apply transformation
@@ -1929,4 +1930,20 @@ message ShuffleChannelParameter {
 
 message UpsampleParameter{
   optional int32 scale = 1 [default = 1];
+}
+
+message FocalLossParameter {
+  enum Engine {
+    DEFAULT = 0;
+    CAFFE = 1;
+    CUDNN = 2;
+  }
+  optional Engine engine = 1 [default = DEFAULT];
+
+  // The axis along which to perform the softmax -- may be negative to index
+  // from the end (e.g., -1 for the last axis).
+  // Any other axes will be evaluated as independent softmaxes.
+  optional int32 axis = 2 [default = 1];
+  optional float alpha = 3 [default = 0.25];
+  optional float gamma = 4 [default = 2.0];
 }
